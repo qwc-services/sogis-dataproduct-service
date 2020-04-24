@@ -4,16 +4,12 @@ import sys
 from flask import Flask, request
 from flask_restplus import Resource, fields, reqparse
 
-# add parent dir to path, so shared modules can be imported
-path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
-sys.path.insert(1, path)
-
-from service_lib.api import Api  # noqa: E402
-from service_lib.api import CaseInsensitiveArgument  # noqa: E402
-from service_lib.app import app_nocache  # noqa: E402
-from service_lib.auth import auth_manager, optional_auth, get_auth_user  # noqa: E402
-from dataproduct_service import DataproductService  # noqa: E402
-from weblayers_service import WeblayersService  # noqa: E402
+from qwc_services_core.api import Api
+from qwc_services_core.api import CaseInsensitiveArgument
+from qwc_services_core.app import app_nocache
+from qwc_services_core.auth import auth_manager, optional_auth, get_auth_user
+from dataproduct_service import DataproductService
+from weblayers_service import WeblayersService
 
 
 # Flask application

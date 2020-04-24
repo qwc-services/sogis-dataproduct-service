@@ -46,6 +46,26 @@ Examples:
 
     curl -s 'http://localhost:5023/weblayers?filter=afu_altlasten_pub,ch.so.afu.fliessgewaesser.netz'
 
-### Testing
 
-See `../testing/README.md`.
+Development
+-----------
+
+Create a virtual environment:
+
+    virtualenv --python=/usr/bin/python3 .venv
+
+Activate virtual environment:
+
+    source .venv/bin/activate
+
+Install requirements:
+
+    pip install -r requirements.txt
+
+
+Testing
+-------
+
+Run all tests:
+
+    python test.py

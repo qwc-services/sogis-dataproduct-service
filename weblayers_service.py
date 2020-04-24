@@ -1,6 +1,4 @@
-from service_lib.database import DatabaseEngine
-from service_lib.config_models import ConfigModels
-from service_lib.permission import PermissionClient
+from qwc_services_core.database import DatabaseEngine
 from flask import json
 from importlib import import_module
 import os
@@ -30,8 +28,8 @@ class WeblayersService:
         """
         self.logger = logger
         self.db_engine = DatabaseEngine()
-        self.config_models = ConfigModels(self.db_engine)
-        self.permission = PermissionClient()
+        # self.config_models = ConfigModels(self.db_engine)
+        # self.permission = PermissionClient()
 
     def weblayers(self, identity, dataproduct_id):
         """Retrieve web display information for one layer
