@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_restplus import Resource, fields, reqparse
 
 from qwc_services_core.api import Api
@@ -221,6 +221,18 @@ class Weblayers(Resource):
                 pass
 
         return return_layers
+
+
+""" readyness probe endpoint """
+@app.route("/ready", methods=['GET'])
+def ready():
+    return jsonify({"status": "OK"})
+
+
+""" liveness probe endpoint """
+@app.route("/healthz", methods=['GET'])
+def healthz():
+    return jsonify({"status": "OK"})
 
 
 # local webserver
