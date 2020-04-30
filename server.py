@@ -8,6 +8,9 @@ from qwc_services_core.api import Api
 from qwc_services_core.api import CaseInsensitiveArgument
 from qwc_services_core.app import app_nocache
 from qwc_services_core.auth import auth_manager, optional_auth, get_auth_user
+from qwc_services_core.tenant_handler import TenantHandler
+from qwc_services_core.permissions_reader import PermissionsReader
+from qwc_services_core.runtime_config import RuntimeConfig
 from dataproduct_service import DataproductService
 from weblayers_service import WeblayersService
 
@@ -80,6 +83,8 @@ app.config.SWAGGER_UI_DOC_EXPANSION = 'list'
 app.config['ERROR_404_HELP'] = False
 
 auth = auth_manager(app, api)
+
+tenant_handler = TenantHandler(app.logger)
 
 # create dataproduct service
 dataproduct_service = DataproductService(app.logger)
@@ -173,6 +178,37 @@ dataproduct_info_result = api.create_model('DataproductInfoResult', [
 ])
 
 
+class TenantConfigHandler:
+    def __init__(self, tenant, logger):
+        self.logger = logger
+        self.tenant = tenant
+
+        config_handler = RuntimeConfig("dataproduct", logger)
+        config = config_handler.tenant_config(tenant)
+
+        self.all_resources = config.resources().get('dataproducts')
+        self.permissions_handler = PermissionsReader(tenant, logger)
+
+    def resources(self, dataproduct_id):
+        """Matching dataproducts.
+
+        :param str dataproduct_id: Dataproduct ID
+        """
+        entries = list(filter(
+            lambda entry: entry.get("identifier") == dataproduct_id,
+            self.all_resources))
+        return entries
+
+
+def handler():
+    tenant = tenant_handler.tenant()
+    handler = tenant_handler.handler('dataproduct', 'handler', tenant)
+    if handler is None:
+        handler = tenant_handler.register_handler(
+            'handler', tenant, TenantConfigHandler(tenant, app.logger))
+    return handler
+
+
 @api.route('/', endpoint='root')
 class Dataproducts(Resource):
     @api.doc('dataproducts')
@@ -192,7 +228,7 @@ class Dataproduct(Resource):
 
         """
         result = dataproduct_service.dataproduct(
-            get_auth_user(), dataproduct_id
+            handler(), get_auth_user(), dataproduct_id
         )
         if result:
             return result
@@ -214,7 +250,8 @@ class Weblayers(Resource):
 
         return_layers = {}
         for layer in layers.split(","):
-            results = weblayers_service.weblayers(get_auth_user(), layer)
+            results = weblayers_service.weblayers(
+                handler(), get_auth_user(), layer)
             try:
                 return_layers[layer] = [results]
             except:

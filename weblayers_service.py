@@ -1,20 +1,3 @@
-from qwc_services_core.database import DatabaseEngine
-from flask import json
-from importlib import import_module
-import os
-import re
-from sqlalchemy.exc import OperationalError, ProgrammingError
-from sqlalchemy.orm import joinedload, selectinload
-from sqlalchemy.sql import text as sql_text
-
-
-DEFAULT_EXTENT_CFG = os.environ.get(
-    'DEFAULT_EXTENT', '2590983.47500000009313226, 1212806.11562500009313226,\
-                       2646267.02499999990686774, 1262755.00937499990686774')
-DEFAULT_EXTENT = [float(x) for x in DEFAULT_EXTENT_CFG.split(',')]
-DEFAULT_SEARCH_WMS_NAME = os.environ.get('DEFAULT_SEARCH_WMS_NAME', 'somap')
-
-
 class WeblayersService:
     """WeblayersService class
 
@@ -27,38 +10,33 @@ class WeblayersService:
         :param Logger logger: Application logger
         """
         self.logger = logger
-        self.db_engine = DatabaseEngine()
-        # self.config_models = ConfigModels(self.db_engine)
-        # self.permission = PermissionClient()
 
-    def weblayers(self, identity, dataproduct_id):
+    def weblayers(self, handler, identity, dataproduct_id):
         """Retrieve web display information for one layer
 
         :param str identity: User name or Identity dict
         :param str dataproduct_id: Dataproduct ID
         """
-        metadata = {}
+        permitted_resources = handler.permissions_handler.resource_permissions(
+            'dataproducts', identity
+        )
+        if dataproduct_id not in permitted_resources:
+            return {}
 
-        permissions = self.permission.dataproduct_permissions(
-            dataproduct_id, identity
-        ) or {}
-        wms_permissions = self.permission.ogc_permissions(
-            DEFAULT_SEARCH_WMS_NAME, 'WMS', identity
-        ) or {}
-        permissions.update(wms_permissions)
+        # permissions = self.permission.dataproduct_permissions(
+        #     dataproduct_id, identity
+        # ) or {}
+        # wms_permissions = self.permission.ogc_permissions(
+        #     DEFAULT_SEARCH_WMS_NAME, 'WMS', identity
+        # ) or {}
+        # permissions.update(wms_permissions)
 
-        session = self.config_models.session()
+        # # find Group or Data layer object
+        # OWSLayer = self.config_models.model('ows_layer')
+        # query = session.query(OWSLayer).filter_by(name=dataproduct_id)
 
-        # find Group or Data layer object
-        OWSLayer = self.config_models.model('ows_layer')
-        query = session.query(OWSLayer).filter_by(name=dataproduct_id)
-        ows_layer = query.first()
-        if ows_layer is not None:
-            metadata, searchterms = self.weblayer_metadata(
-                ows_layer, True, permissions, session
-            )
-
-        session.close()
+        metadata = handler.resources(dataproduct_id)
+        # TODO: embed child layers
 
         return metadata
 

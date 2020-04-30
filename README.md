@@ -1,11 +1,5 @@
-Dataproduct service
-===================
-
-
-Dependencies
-------------
-
-* Permission service (`PERMISSION_SERVICE_URL`)
+SO!GIS Dataproduct service
+==========================
 
 
 Configuration
@@ -42,7 +36,7 @@ API:
 
 Examples:
 
-    curl -s http://localhost:5023/afu_altlasten_pub
+    curl -s http://localhost:5023/ch.so.afu.fliessgewaesser.netz
 
     curl -s 'http://localhost:5023/weblayers?filter=afu_altlasten_pub,ch.so.afu.fliessgewaesser.netz'
 
