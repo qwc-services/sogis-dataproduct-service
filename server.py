@@ -126,7 +126,7 @@ contact = api.create_model('Contact', [
 postgis_datasource = api.create_model('Postgis_datasource', [
     ['dbconnection', fields.String(required=True, description='e.g. service=sogis_webmapping')],
     ['geometry_type', fields.String(required=True, description=' e.g. MULTIPOLYGON')],
-    ['srid', fields.String(required=True, description='<srid>')],
+    ['srid', fields.Integer(required=True, description='<srid>')],
     ['data_set_name', fields.String(required=True, description='Fully qualified DB table name')],
     ['geometry_field', fields.String(required=True, description='Fieldname')],
     ['primary_key', fields.String(required=True, description='Fieldname')]
@@ -134,7 +134,7 @@ postgis_datasource = api.create_model('Postgis_datasource', [
 
 raster_datasource = api.create_model('Raster_datasource', [
     ['datasource', fields.String(required=True, description='File path')],
-    ['srid', fields.String(required=True, description='<srid>')]
+    ['srid', fields.Integer(required=True, description='<srid>')]
 ])
 
 wms_datasource = api.create_model('Wms_datasource', [

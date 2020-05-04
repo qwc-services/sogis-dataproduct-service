@@ -18,42 +18,7 @@
     },
     "config": {
       "title": "Config options",
-      "type": "object",
-      "properties": {
-        "default_extent": {
-          "description": "Default extent",
-          "type": "array",
-          "items": {
-            "type": "number"
-          },
-          "minItems": 4,
-          "maxItems": 4
-        },
-        "default_search_wms_name": {
-          "description": "Default WMS name",
-          "type": "string"
-        },
-        "wms_service_url": {
-          "description": "WMS service URL override",
-          "type": "string"
-        },
-        "raster_datasource_pattern": {
-          "description": "Regex pattern for modifying raster data sources",
-          "type": "string"
-        },
-        "raster_datasource_repl": {
-          "description": "Substitution for modifying raster data sources",
-          "type": "string"
-        },
-        "qgs_resources_dir": {
-          "description": "Path to QGIS resources for embedding QML symbols",
-          "type": "string"
-        }
-      },
-      "required": [
-        "default_extent",
-        "default_search_wms_name"
-      ]
+      "type": "object"
     },
     "resources": {
       "title": "Resources",
@@ -297,7 +262,7 @@
         },
         "srid": {
           "description": "<srid>",
-          "type": "string"
+          "type": "integer"
         },
         "data_set_name": {
           "description": "Fully qualified DB table name",
@@ -331,7 +296,7 @@
         },
         "srid": {
           "description": "<srid>",
-          "type": "string"
+          "type": "integer"
         }
       },
       "required": [
