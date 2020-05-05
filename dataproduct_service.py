@@ -23,61 +23,40 @@ class DataproductService:
         if dataproduct_id not in permitted_resources:
             return {}
 
-        ows_layer = handler.resources(dataproduct_id)
-        # TODO: embed child layers + collect searchterms
+        metadata = []
+        selected_resources = handler.resources(dataproduct_id)
+        for resource in selected_resources:
+            visible = resource.get('visibility', True)
+            entry, _ = self._build_tree(
+                resource, visible, handler.weblayers, permitted_resources)
+            metadata.append(entry)
 
-        return ows_layer
+        return metadata
 
-    def _dataproduct_metadata(self, ows_layer, permissions, session):
+    def _build_tree(self, resource, visible, all_resources, permissions):
         """Recursively collect metadata of a dataproduct.
-
-        :param obj ows_layer: Group or Data layer object
-        :param obj permission: Dataproduct service permission
-        :param Session session: DB session
         """
-        metadata = {}
-
-        # type
-        sublayers = None
-        data_set_view = None
         searchterms = []
-        if ows_layer.type == 'group':
-
-            # collect sub layers
-            sublayers = []
-            for group_layer in ows_layer.sub_layers:
-                sub_layer = group_layer.sub_layer
-                submetadata, subsearchterms = self.dataproduct_metadata(
-                    sub_layer, permissions, session
-                )
+        sublayers = []
+        for sublayer in resource.get('sublayers', []):
+            if sublayer in permissions:
+                subresource = all_resources.get(sublayer)
+                subvisible = visible and subresource.get('visibility', True)
+                submetadata, subsearchterms = self._build_tree(
+                        subresource, subvisible, all_resources, permissions)
                 if submetadata:
-                    sublayers.append(submetadata)
+                    if subresource.get('type') != 'facadelayer':
+                        sublayers.append(submetadata)
                     searchterms += subsearchterms
 
-            if not sublayers:
-                # sub layers not permitted, remove empty group
-                return (metadata, searchterms)
-        else:
-            if ows_layer.name not in permissions.get('data_layers', []):
-                # data layer not permitted
-                return (metadata, searchterms)
-
-            dataproduct_type = 'datasetview'
-            # find matching DataSetView
-            DataSetView = self.config_models.model('data_set_view')
-            query = session.query(DataSetView).filter_by(name=ows_layer.name)
-            data_set_view = query.first()
-
-        if data_set_view:
-            if data_set_view.facet:
-                metadata.update({
-                    'searchterms': [data_set_view.facet]
-                    })
-                searchterms.append(data_set_view.facet)
-        elif len(searchterms) > 0:
+        metadata = {
+            k: v for k, v in resource.items() if k not in IGNORE_KEYS}
+        metadata.update({'sublayers': sublayers})
+        if len(searchterms) > 0:
             metadata.update({
                 'searchterms': searchterms
             })
-        metadata.update(datasource)
-
         return (metadata, searchterms)
+
+
+IGNORE_KEYS = ['visibility', 'queryable', 'displayField', 'opacity']

@@ -186,7 +186,11 @@ class TenantConfigHandler:
         config_handler = RuntimeConfig("dataproduct", logger)
         config = config_handler.tenant_config(tenant)
 
-        self.all_resources = config.resources().get('dataproducts')
+        dataproducts = config.resources().get('dataproducts', [])
+        self.all_resources = dataproducts
+        self.weblayers = {
+            entry.get("identifier"): entry for entry in dataproducts if entry.get("datatype") != 'table'
+        }
         self.permissions_handler = PermissionsReader(tenant, logger)
 
     def resources(self, dataproduct_id):
@@ -253,7 +257,7 @@ class Weblayers(Resource):
             results = weblayers_service.weblayers(
                 handler(), get_auth_user(), layer)
             try:
-                return_layers[layer] = [results]
+                return_layers[layer] = results
             except:
                 pass
 

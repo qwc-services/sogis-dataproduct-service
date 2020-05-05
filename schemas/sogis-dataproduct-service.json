@@ -94,6 +94,22 @@
                 "description": "Coordinate reference system, e.g. EPSG:2056",
                 "type": "string"
               },
+              "visibility": {
+                "description": "Default layer visibility",
+                "type": "boolean"
+              },
+              "queryable": {
+                "description": "Whether the layer is identifyable",
+                "type": "boolean"
+              },
+              "displayField": {
+                "description": "Field name to use as feature title in identify results",
+                "type": "string"
+              },
+              "opacity": {
+                "description": "Default layer opacity, 0-255",
+                "type": "integer"
+              },
               "datatype": {
                 "description": "vector: Vectorlayer, raster: Rasterlayer, table: Table without geometry",
                 "type": "string",
