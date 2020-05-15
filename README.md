@@ -1,3 +1,6 @@
+[![](https://github.com/qwc-services/sogis-dataproduct-service/workflows/build/badge.svg)](https://hub.docker.com/repository/docker/sourcepole/sogis-dataproduct-service)
+[![](https://img.shields.io/docker/pulls/sourcepole/sogis-dataproduct-service)](https://hub.docker.com/repository/docker/sourcepole/sogis-dataproduct-service)
+
 SO!GIS Dataproduct service
 ==========================
 
@@ -14,7 +17,7 @@ Environment variables:
 | `WMS_SERVICE_URL`           | WMS service URL override                          | `<empty>`                    |
 | `RASTER_DATASOURCE_PATTERN` | Regex pattern for modifying raster data sources   | `<empty>`                    |
 | `RASTER_DATASOURCE_REPL`    | Substitution for modifying raster data sources    | `<empty>`                    |
-| `QGS_RESOURCES_DIR`         | Path to QGIS resources for embedding QML symbols  | `<empty>`                    |  
+| `QGS_RESOURCES_DIR`         | Path to QGIS resources for embedding QML symbols  | `<empty>`                    |
 
 The connection dir for raster data sources returned in `raster_datasource` is modified by `re.sub(RASTER_DATASOURCE_PATTERN, RASTER_DATASOURCE_REPL, data_source.connection)`.
 
