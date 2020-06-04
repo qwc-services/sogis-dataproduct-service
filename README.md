@@ -1,6 +1,3 @@
-[![](https://github.com/qwc-services/sogis-dataproduct-service/workflows/build/badge.svg)](https://hub.docker.com/repository/docker/sourcepole/sogis-dataproduct-service)
-[![](https://img.shields.io/docker/pulls/sourcepole/sogis-dataproduct-service)](https://hub.docker.com/repository/docker/sourcepole/sogis-dataproduct-service)
-
 SO!GIS Dataproduct service
 ==========================
 
