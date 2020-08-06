@@ -61,9 +61,11 @@ class WeblayersService:
             'bbox': {
                 'bounds': resource.get('bbox'),
                 'crs': resource.get('crs')
-            },
-            'sublayers': sublayers
+            }
         }
+        if sublayers:
+            metadata['sublayers'] = sublayers
+
         # Filter null entries
         metadata = {
             k: v for k, v in metadata.items() if v is not None
