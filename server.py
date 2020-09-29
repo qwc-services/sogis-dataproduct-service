@@ -2,7 +2,7 @@ import os
 import sys
 
 from flask import Flask, request, jsonify
-from flask_restplus import Resource, fields, reqparse
+from flask_restx import Resource, fields, reqparse
 
 from qwc_services_core.api import Api
 from qwc_services_core.api import CaseInsensitiveArgument
