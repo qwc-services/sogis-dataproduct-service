@@ -45,7 +45,7 @@ class WeblayersService:
                 submetadata, subsearchterms = self._build_tree(
                         subresource, subvisible, all_resources, permissions)
                 if submetadata:
-                    if subresource.get('type') != 'facadelayer':
+                    if resource.get('type') != 'facadelayer':
                         sublayers.append(submetadata)
                     searchterms += subsearchterms
 
