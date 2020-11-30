@@ -128,6 +128,9 @@
               "wms_datasource": {
                 "$ref": "#/definitions/WmsDatasource"
               },
+              "external_layer": {
+                "$ref": "#/definitions/ExternalLayer"
+              },
               "qml": {
                 "description": "QGIS Style XML (escaped)",
                 "type": "string"
@@ -336,6 +339,24 @@
       "required": [
         "service_url",
         "name"
+      ]
+    },
+   "ExternalLayer": {
+      "title": "ExternalLayer",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Service type",
+          "type": "string"
+        },
+        "url": {
+          "description": "Base URL of external layer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "url"
       ]
     }
   }

@@ -63,6 +63,15 @@ class WeblayersService:
                 'crs': resource.get('crs')
             }
         }
+        if resource.get('external_layer'):
+            metadata['externalLayer'] = resource.get('external_layer')
+            # Overwrite missing BBOX for external WMS/WMTS
+            metadata['bbox'] = {
+                'bounds': [5.70211, 45.7392, 10.6432, 47.8505],
+                'crs': 'EPSG:4326'
+            }
+            if metadata['externalLayer'].get('type', '') == 'wmts':
+                metadata['queryable'] = False
         if sublayers:
             metadata['sublayers'] = sublayers
 
