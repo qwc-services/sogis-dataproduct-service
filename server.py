@@ -187,21 +187,15 @@ class TenantConfigHandler:
         config = config_handler.tenant_config(tenant)
 
         dataproducts = config.resources().get('dataproducts', [])
-        self.all_resources = dataproducts
+        # lookup for dataproducts
+        self.dataproducts = {
+            entry.get("identifier"): entry for entry in dataproducts
+        }
+        # lookup for weblayers
         self.weblayers = {
             entry.get("identifier"): entry for entry in dataproducts if entry.get("datatype") != 'table'
         }
         self.permissions_handler = PermissionsReader(tenant, logger)
-
-    def resources(self, dataproduct_id):
-        """Matching dataproducts.
-
-        :param str dataproduct_id: Dataproduct ID
-        """
-        entries = list(filter(
-            lambda entry: entry.get("identifier") == dataproduct_id,
-            self.all_resources))
-        return entries
 
 
 def handler():

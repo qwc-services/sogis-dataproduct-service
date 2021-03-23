@@ -23,13 +23,13 @@ class DataproductService:
         if dataproduct_id not in permitted_resources:
             return {}
 
-        metadata = []
-        selected_resources = handler.resources(dataproduct_id)
-        for resource in selected_resources:
+        metadata = {}
+        resource = handler.dataproducts.get(dataproduct_id)
+        if resource:
             visible = resource.get('visibility', True)
             entry, _ = self._build_tree(
-                resource, visible, handler.weblayers, permitted_resources)
-            metadata.append(entry)
+                resource, visible, handler.dataproducts, permitted_resources)
+            metadata = entry
 
         return metadata
 
