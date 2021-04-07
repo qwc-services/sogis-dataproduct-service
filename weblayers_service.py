@@ -21,11 +21,11 @@ class WeblayersService:
             'dataproducts', identity
         )
         if dataproduct_id not in permitted_resources:
-            return {}
+            return []
 
         metadata = []
         resource = handler.weblayers.get(dataproduct_id)
-        if resource:
+        if resource and dataproduct_id not in handler.facade_sublayers:
             visible = resource.get('visibility', True)
             entry, _ = self._build_tree(
                 resource, visible, handler.weblayers, permitted_resources)

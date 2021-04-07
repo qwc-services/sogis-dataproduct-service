@@ -195,6 +195,15 @@ class TenantConfigHandler:
         self.weblayers = {
             entry.get("identifier"): entry for entry in dataproducts if entry.get("datatype") != 'table'
         }
+
+        # collect facade sublayers
+        facade_sublayers = []
+        for entry in dataproducts:
+            if entry.get('type') == 'facadelayer':
+                facade_sublayers += entry.get('sublayers', [])
+        # lookup for facade sublayers
+        self.facade_sublayers = set(facade_sublayers)
+
         self.permissions_handler = PermissionsReader(tenant, logger)
 
 
