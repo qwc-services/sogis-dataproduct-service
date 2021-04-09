@@ -196,13 +196,19 @@ class TenantConfigHandler:
             entry.get("identifier"): entry for entry in dataproducts if entry.get("datatype") != 'table'
         }
 
-        # collect facade sublayers
+        # collect layergroup and facade sublayers
+        layergroup_sublayers = []
         facade_sublayers = []
         for entry in dataproducts:
-            if entry.get('type') == 'facadelayer':
+            if entry.get('type') == 'layergroup':
+                layergroup_sublayers += entry.get('sublayers', [])
+            elif entry.get('type') == 'facadelayer':
                 facade_sublayers += entry.get('sublayers', [])
-        # lookup for facade sublayers
-        self.facade_sublayers = set(facade_sublayers)
+
+        # lookup for facade sublayers not present in other layer groups
+        self.facade_sublayers = (
+            set(facade_sublayers) - set(layergroup_sublayers)
+        )
 
         self.permissions_handler = PermissionsReader(tenant, logger)
 
