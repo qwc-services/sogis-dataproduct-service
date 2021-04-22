@@ -26,9 +26,9 @@ class WeblayersService:
         metadata = []
         resource = handler.weblayers.get(dataproduct_id)
         if resource and dataproduct_id not in handler.facade_sublayers:
-            visible = resource.get('visibility', True)
+            # NOTE: requested dataproduct is always visible
             entry, _ = self._build_tree(
-                resource, visible, handler.weblayers, permitted_resources)
+                resource, True, handler.weblayers, permitted_resources)
             metadata.append(entry)
 
         return metadata
@@ -39,9 +39,10 @@ class WeblayersService:
         searchterms = []
         sublayers = []
         for sublayer in resource.get('sublayers', []):
-            if sublayer in permissions:
-                subresource = all_resources.get(sublayer)
-                subvisible = visible and subresource.get('visibility', True)
+            if sublayer.get('identifier') in permissions:
+                subresource = all_resources.get(sublayer.get('identifier'))
+                # NOTE: no sublayers visible if parent is not visible
+                subvisible = visible and sublayer.get('visibility', True)
                 submetadata, subsearchterms = self._build_tree(
                         subresource, subvisible, all_resources, permissions)
                 if submetadata:
@@ -53,7 +54,7 @@ class WeblayersService:
             'name': resource.get('identifier'),
             'title': resource.get('display'),
             'abstract': resource.get('description'),
-            'visibility': visible and resource.get('visibility', True),
+            'visibility': visible,
             'queryable': resource.get('queryable'),
             'displayField': resource.get('displayField'),
             'searchterms': resource.get('searchterms'),

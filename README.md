@@ -1,6 +1,8 @@
 SO!GIS Dataproduct service
 ==========================
 
+**Note:** The schema for sublayer visibilities has changed in `v2.0.5` of `dataproductConfig.json`. Prior service configs must be recreated.
+
 
 Configuration
 -------------

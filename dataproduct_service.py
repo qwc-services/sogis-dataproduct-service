@@ -26,24 +26,22 @@ class DataproductService:
         metadata = {}
         resource = handler.dataproducts.get(dataproduct_id)
         if resource:
-            visible = resource.get('visibility', True)
             entry, _ = self._build_tree(
-                resource, visible, handler.dataproducts, permitted_resources)
+                resource, handler.dataproducts, permitted_resources)
             metadata = entry
 
         return metadata
 
-    def _build_tree(self, resource, visible, all_resources, permissions):
+    def _build_tree(self, resource, all_resources, permissions):
         """Recursively collect metadata of a dataproduct.
         """
         searchterms = []
         sublayers = []
         for sublayer in resource.get('sublayers', []):
-            if sublayer in permissions:
-                subresource = all_resources.get(sublayer)
-                subvisible = visible and subresource.get('visibility', True)
+            if sublayer.get('identifier') in permissions:
+                subresource = all_resources.get(sublayer.get('identifier'))
                 submetadata, subsearchterms = self._build_tree(
-                        subresource, subvisible, all_resources, permissions)
+                        subresource, all_resources, permissions)
                 if submetadata:
                     sublayers.append(submetadata)
                     searchterms += subsearchterms

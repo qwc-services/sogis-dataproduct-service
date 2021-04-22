@@ -94,10 +94,6 @@
                 "description": "Coordinate reference system, e.g. EPSG:2056",
                 "type": "string"
               },
-              "visibility": {
-                "description": "Default layer visibility",
-                "type": "boolean"
-              },
               "queryable": {
                 "description": "Whether the layer is identifyable",
                 "type": "boolean"
@@ -136,10 +132,23 @@
                 "type": "string"
               },
               "sublayers": {
-                "description": "List of sublayer dataproduct identifiers",
+                "description": "List of sublayer dataproduct references",
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "description": "Sublayer dataproduct identifier",
+                      "type": "string"
+                    },
+                    "visibility": {
+                      "description": "Default layer visibility",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "identifier"
+                  ]
                 }
               }
             },

@@ -201,9 +201,13 @@ class TenantConfigHandler:
         facade_sublayers = []
         for entry in dataproducts:
             if entry.get('type') == 'layergroup':
-                layergroup_sublayers += entry.get('sublayers', [])
+                layergroup_sublayers += [
+                    sub.get('identifier') for sub in entry.get('sublayers', [])
+                ]
             elif entry.get('type') == 'facadelayer':
-                facade_sublayers += entry.get('sublayers', [])
+                facade_sublayers += [
+                    sub.get('identifier') for sub in entry.get('sublayers', [])
+                ]
 
         # lookup for facade sublayers not present in other layer groups
         self.facade_sublayers = (
