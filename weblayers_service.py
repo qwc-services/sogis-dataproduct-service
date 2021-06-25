@@ -76,6 +76,10 @@ class WeblayersService:
         if sublayers:
             metadata['sublayers'] = sublayers
 
+        # metadata from MetaDB
+        if 'metadata' in resource:
+            metadata['metadata'] = resource['metadata']
+
         # Filter null entries
         metadata = {
             k: v for k, v in metadata.items() if v is not None

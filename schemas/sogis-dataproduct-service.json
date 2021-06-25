@@ -150,6 +150,27 @@
                     "identifier"
                   ]
                 }
+              },
+              "metadata": {
+                "description": "Metadata entries of layer for use in Map Viewer",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "description": "Label of metadata entry",
+                      "type": "string"
+                    },
+                    "content": {
+                      "description": "HTML content of metadata entry",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "content"
+                  ]
+                }
               }
             },
             "required": [
