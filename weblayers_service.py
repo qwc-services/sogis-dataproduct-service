@@ -29,7 +29,8 @@ class WeblayersService:
             # NOTE: requested dataproduct is always visible
             entry, _ = self._build_tree(
                 resource, True, handler.weblayers, permitted_resources)
-            metadata.append(entry)
+            if entry:
+                metadata.append(entry)
 
         return metadata
 
@@ -38,6 +39,11 @@ class WeblayersService:
         """
         searchterms = []
         sublayers = []
+
+        if 'wms_datasource' not in resource:
+            # skip dataproduct if not in WMS
+            return ([], [])
+
         for sublayer in resource.get('sublayers', []):
             if sublayer.get('identifier') in permissions:
                 subresource = all_resources.get(sublayer.get('identifier'))
