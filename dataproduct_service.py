@@ -1,3 +1,6 @@
+import base64
+
+
 class DataproductService:
     """DataproductService class
 
@@ -46,14 +49,58 @@ class DataproductService:
                     sublayers.append(submetadata)
                     searchterms += subsearchterms
 
+        description = None
+        if resource.get('description'):
+            description = resource.get('description')
+        elif resource.get('description_base64'):
+            description = self.b64decode(
+                resource.get('description_base64'),
+                "description of '%s'" % resource.get('identifier')
+            )
+
+        qml = None
+        if resource.get('qml'):
+            qml = resource.get('qml')
+        elif resource.get('qml_base64'):
+            qml = self.b64decode(
+                resource.get('qml_base64'),
+                "qml of '%s'" % resource.get('identifier')
+            )
+
         metadata = {
             k: v for k, v in resource.items() if k not in IGNORE_KEYS}
-        metadata.update({'sublayers': sublayers})
+        metadata.update({
+            'description': description,
+            'sublayers': sublayers
+        })
         if len(searchterms) > 0:
             metadata.update({
                 'searchterms': searchterms
             })
+        if qml:
+            metadata.update({
+                'qml': qml
+            })
         return (metadata, searchterms)
 
+    def b64decode(self, base64_value, description=""):
+        """Return decoded Base64 encoded value or raw value on error.
 
-IGNORE_KEYS = ['visibility', 'queryable', 'displayField', 'opacity']
+        :param str base64_value: Base64 encoded value
+        :param str description: Description included in error message
+        """
+        value = base64_value
+        try:
+            value = base64.b64decode(base64_value).decode('utf-8')
+        except Exception as e:
+            self.logger.error(
+                "Could not decode Base64 encoded value for %s:"
+                "\n%s\n%s" % (description, e, base64_value)
+            )
+            value = base64_value
+        return value
+
+
+IGNORE_KEYS = [
+    'queryable', 'displayField', 'opacity', 'description_base64', 'qml_base64'
+]

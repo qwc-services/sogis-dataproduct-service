@@ -1,3 +1,6 @@
+import base64
+
+
 class WeblayersService:
     """WeblayersService class
 
@@ -56,10 +59,25 @@ class WeblayersService:
                         sublayers.append(submetadata)
                     searchterms += subsearchterms
 
+        abstract = None
+        if resource.get('description'):
+            abstract = resource.get('description')
+        elif resource.get('description_base64'):
+            try:
+                base64_value = resource.get('description_base64')
+                abstract = base64.b64decode(base64_value).decode('utf-8')
+            except Exception as e:
+                self.logger.error(
+                    "Could not decode Base64 encoded value for description "
+                    "of '%s':\n%s\n%s"
+                    % (resource.get('identifier'), e, base64_value)
+                )
+                abstract = base64_value
+
         metadata = {
             'name': resource.get('identifier'),
             'title': resource.get('display'),
-            'abstract': resource.get('description'),
+            'abstract': abstract,
             'visibility': visible,
             'queryable': resource.get('queryable'),
             'displayField': resource.get('displayField'),
