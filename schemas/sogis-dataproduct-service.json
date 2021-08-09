@@ -183,25 +183,11 @@
                 }
               }
             },
-            "oneOf": [
-              {
-                "required": [
-                  "identifier",
-                  "display",
-                  "type",
-                  "description",
-                  "contacts"
-                ]
-              },
-              {
-                "required": [
-                  "identifier",
-                  "display",
-                  "type",
-                  "description_base64",
-                  "contacts"
-                ]
-              }
+            "required": [
+              "identifier",
+              "display",
+              "type",
+              "contacts"
             ]
           }
         }
