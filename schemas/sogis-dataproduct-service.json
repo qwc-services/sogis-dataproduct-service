@@ -141,6 +141,29 @@
                 "type": "string",
                 "contentEncoding": "base64"
               },
+              "qml_assets": {
+                "title": "Assets for QGIS Style XML",
+                "type": "array",
+                "items": {
+                  "title": "QML assets",
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "description": "Asset path as defined in QML from 'qml' or 'qml_base64'",
+                      "type": "string"
+                    },
+                    "base64": {
+                      "description": "QML asset in Base64 encoding",
+                      "type": "string",
+                      "contentEncoding": "base64"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "base64"
+                  ]
+                }
+              },
               "sublayers": {
                 "description": "List of sublayer dataproduct references",
                 "type": "array",

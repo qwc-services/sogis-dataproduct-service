@@ -67,6 +67,13 @@ class DataproductService:
                 "qml of '%s'" % resource.get('identifier')
             )
 
+        # embed any QML assets
+        for asset in resource.get('qml_assets', []):
+            # replace symbol paths in QML with embedded asset as base64
+            pattern = "v=\"%s\"" % asset.get('path')
+            replacement = "v=\"base64:%s\"" % asset.get('base64')
+            qml = qml.replace(pattern, replacement)
+
         metadata = {
             k: v for k, v in resource.items() if k not in IGNORE_KEYS}
         metadata.update({
@@ -102,5 +109,6 @@ class DataproductService:
 
 
 IGNORE_KEYS = [
-    'queryable', 'displayField', 'opacity', 'description_base64', 'qml_base64'
+    'queryable', 'displayField', 'opacity', 'description_base64', 'qml_base64',
+    'qml_assets'
 ]
