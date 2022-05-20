@@ -40,12 +40,13 @@
                 "type": "string"
               },
               "type": {
-                "description": "Type of dataprodct",
+                "description": "Type of dataproduct",
                 "type": "string",
                 "enum": [
                   "datasetview",
                   "layergroup",
-                  "facadelayer"
+                  "facadelayer",
+                  "extwms"
                 ]
               },
               "synonyms": {
