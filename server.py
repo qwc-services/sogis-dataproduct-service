@@ -7,7 +7,7 @@ from flask_restx import Resource, fields, reqparse
 from qwc_services_core.api import Api
 from qwc_services_core.api import CaseInsensitiveArgument
 from qwc_services_core.app import app_nocache
-from qwc_services_core.auth import auth_manager, optional_auth, get_auth_user
+from qwc_services_core.auth import auth_manager, optional_auth, get_identity
 from qwc_services_core.tenant_handler import TenantHandler
 from qwc_services_core.permissions_reader import PermissionsReader
 from qwc_services_core.runtime_config import RuntimeConfig
@@ -245,7 +245,7 @@ class Dataproduct(Resource):
 
         """
         result = dataproduct_service.dataproduct(
-            handler(), get_auth_user(), dataproduct_id
+            handler(), get_identity(), dataproduct_id
         )
         if result:
             return result
@@ -268,7 +268,7 @@ class Weblayers(Resource):
         return_layers = {}
         for layer in layers.split(","):
             results = weblayers_service.weblayers(
-                handler(), get_auth_user(), layer)
+                handler(), get_identity(), layer)
             try:
                 return_layers[layer] = results
             except:
