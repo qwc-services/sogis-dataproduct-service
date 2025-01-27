@@ -1,6 +1,6 @@
 [project]
 name = "sogis-dataproduct-service"
-version = "v2024.01.16"
+version = "v2025.01.27"
 description = "SO!GIS Dataproduct service"
 readme = "README.md"
 requires-python = ">=3.10"
