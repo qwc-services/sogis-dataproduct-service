@@ -360,7 +360,7 @@ wheels = [
 
 [[package]]
 name = "sogis-dataproduct-service"
-version = "2025.2.8"
+version = "2025.2.9"
 source = { virtual = "." }
 dependencies = [
     { name = "flask" },
