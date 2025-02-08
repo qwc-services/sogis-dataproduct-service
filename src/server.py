@@ -1,6 +1,3 @@
-import os
-import sys
-
 from flask import Flask, request, jsonify
 from flask_restx import Resource, fields, reqparse
 
@@ -8,7 +5,8 @@ from qwc_services_core.api import Api
 from qwc_services_core.api import CaseInsensitiveArgument
 from qwc_services_core.app import app_nocache
 from qwc_services_core.auth import auth_manager, optional_auth, get_identity
-from qwc_services_core.tenant_handler import TenantHandler
+from qwc_services_core.tenant_handler import (
+    TenantHandler, TenantPrefixMiddleware, TenantSessionInterface)
 from qwc_services_core.permissions_reader import PermissionsReader
 from qwc_services_core.runtime_config import RuntimeConfig
 from dataproduct_service import DataproductService
@@ -85,6 +83,8 @@ app.config['ERROR_404_HELP'] = False
 auth = auth_manager(app, api)
 
 tenant_handler = TenantHandler(app.logger)
+app.wsgi_app = TenantPrefixMiddleware(app.wsgi_app)
+app.session_interface = TenantSessionInterface()
 
 # create dataproduct service
 dataproduct_service = DataproductService(app.logger)
