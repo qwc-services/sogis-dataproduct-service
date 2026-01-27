@@ -86,7 +86,8 @@ class WeblayersService:
             'bbox': {
                 'bounds': resource.get('bbox'),
                 'crs': resource.get('crs')
-            }
+            },
+            'editConfigUrl': '/map/editConfig.json?map=somap&layers=' + resource.get('identifier')
         }
         if resource.get('external_layer'):
             metadata['externalLayer'] = resource.get('external_layer')

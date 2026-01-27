@@ -38,7 +38,8 @@ api = Api(app, version='1.0', title='Dataproduct service API',
                 "opacity": <opacity>,                         /* Default layer opacity, 0-255 */
                 "visibility": <bool>,                         /* Default layer visibility */
                 "queryable": <bool>,                          /* Whether the layer is identifyable */
-                "searchterms": ["<dataproduct_id>",...]      /* List of searchable DataProduct identifiers */
+                "searchterms": ["<dataproduct_id>",...],      /* List of searchable DataProduct identifiers */
+                "editConfigUrl: "<url_to_editConfig.json>"    /* URL to editConfig.json */
             }
         ]
     }
