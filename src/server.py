@@ -25,47 +25,22 @@ api = Api(app, version='1.0', title='Dataproduct service API',
 **Structure of weblayers query response:**
 
     {
-      "results": [
-        {
-          "title": "<title>",                                 /* Display text */
-          "id": "<dataproduct_id>",                           /* Identifier */
-          "layer": {                                          /* Layer definition */
-            "name": "<wms_layer_name>",                       /* WMS name of the root layer */
-            "sublayers": [                                    /* List of WMS sublayers */
-              {
+        "<dataproduct_id>": [                                    /* List of WMS sublayers */
+            {
                 "name": "<wms_layer_name>",                   /* WMS name of sublayer */
                 "title": "<title>",                           /* Display name of layer */
                 "bbox": {                                     /* Layer bounding box */
-                  "crs": "EPSG:<srid>",
-                  "bounds": [<xmin>, <ymin>, <xmax>, <ymax>]
+                    "crs": "EPSG:<srid>",
+                    "bounds": [<xmin>, <ymin>, <xmax>, <ymax>]
                 },
                 "abstract": "<abstract_text>",                /* Layer description (optional) */
                 "displayField": "<field_name>",               /* Field name to use as feature title in identify results */
                 "opacity": <opacity>,                         /* Default layer opacity, 0-255 */
                 "visibility": <bool>,                         /* Default layer visibility */
                 "queryable": <bool>,                          /* Whether the layer is identifyable */
-                "searchterms": ["<dataproduct_id>",...]       /* List of searchable DataProduct identifiers */
-              }
-            ]
-          }
-        },
-        {
-          "title": "<title>",
-          "id": "<dataproduct_id>",
-          "layer": {
-            "name": "<wms_layer_name>",
-            "sublayers": [
-              {
-                "name": "<wms_group_name>",                   /* WMS group of sublayer */
-                "title": "<title>",                           /* Display name of group */
-                "sublayers": [
-                  {...}                                       /* List children groups or layers
-                ]
-              }
-            ]
-          }
-        }
-      ]
+                "searchterms": ["<dataproduct_id>",...]      /* List of searchable DataProduct identifiers */
+            }
+        ]
     }
 
 Notes:
