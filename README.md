@@ -1,8 +1,6 @@
 SO!GIS Dataproduct service
 ==========================
 
-**Note:** The schema for sublayer visibilities has changed in `v2.0.5` of `dataproductConfig.json`. Prior service configs must be recreated.
-
 
 Configuration
 -------------
@@ -20,43 +18,33 @@ Environment variables:
 
 The connection dir for raster data sources returned in `raster_datasource` is modified by `re.sub(RASTER_DATASOURCE_PATTERN, RASTER_DATASOURCE_REPL, data_source.connection)`.
 
+Run locally
+-----------
 
-Usage/Development
------------------
+Install dependencies and run:
 
-Start service:
+    export CONFIG_PATH=<CONFIG_PATH>
+    uv run src/server.py
 
-    python src/server.py
+To use configs from a `qwc-docker` setup, set `CONFIG_PATH=<...>/qwc-docker/volumes/config`.
 
-base URL:
+Set `FLASK_DEBUG=1` for additional debug output.
 
-    http://localhost:5023/
+Set `FLASK_RUN_PORT=<port>` to change the default port (default: `5000`).
 
-API:
+API documentation:
 
-    http://localhost:5023/api/
+    http://localhost:5000/api/
 
 Examples:
 
-    curl -s http://localhost:5023/ch.so.afu.fliessgewaesser.netz
+    http://localhost:5000/ch.so.afu.fliessgewaesser.netz
 
-    curl -s 'http://localhost:5023/weblayers?filter=afu_altlasten_pub,ch.so.afu.fliessgewaesser.netz'
+    http://localhost:5000/weblayers?filter=afu_altlasten_pub,ch.so.afu.fliessgewaesser.netz
 
+Docker usage
+------------
 
-Development
------------
+The Docker image is published on [Dockerhub](https://hub.docker.com/r/sourcepole/sogis-dataproduct-service).
 
-Install dependencies and run service:
-
-    uv run src/server.py
-
-With config path:
-
-    CONFIG_PATH=/PATH/TO/CONFIGS/ uv run src/server.py
-
-Testing
--------
-
-Run all tests:
-
-    python test.py
+See sample [docker-compose.yml](https://github.com/qwc-services/qwc-docker/blob/master/docker-compose-example.yml) of [qwc-docker](https://github.com/qwc-services/qwc-docker).
