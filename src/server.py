@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify
 from flask_restx import Resource, fields, reqparse
 
@@ -268,4 +270,4 @@ def healthz():
 # local webserver
 if __name__ == '__main__':
     print("Starting GetDataproduct service...")
-    app.run(host='localhost', port=5023, debug=True)
+    app.run(host='localhost', port=os.environ.get("FLASK_RUN_PORT", 5000), debug=True)
