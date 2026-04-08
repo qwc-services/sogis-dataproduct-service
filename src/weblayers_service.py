@@ -30,7 +30,7 @@ class WeblayersService:
         resource = handler.weblayers.get(dataproduct_id)
         if resource and dataproduct_id not in handler.facade_sublayers:
             # NOTE: requested dataproduct is always visible
-            entry, _ = self._build_tree(
+            entry, _, _ = self._build_tree(
                 resource, True, handler.weblayers, permitted_resources)
             if entry:
                 metadata.append(entry)
@@ -42,6 +42,7 @@ class WeblayersService:
         """
         searchterms = []
         sublayers = []
+        layer_names = []
 
         if 'wms_datasource' not in resource:
             # skip dataproduct if not in WMS
@@ -52,12 +53,15 @@ class WeblayersService:
                 subresource = all_resources.get(sublayer.get('identifier'))
                 # NOTE: no sublayers visible if parent is not visible
                 subvisible = visible and sublayer.get('visibility', True)
-                submetadata, subsearchterms = self._build_tree(
+                submetadata, subsearchterms, sublayer_names = self._build_tree(
                         subresource, subvisible, all_resources, permissions)
                 if submetadata:
                     if resource.get('type') != 'facadelayer':
                         sublayers.append(submetadata)
                     searchterms += subsearchterms
+                layer_names += sublayer_names
+        else:
+            layer_names.append(resource.get('identifier'))
 
         abstract = None
         if resource.get('description'):
@@ -87,7 +91,7 @@ class WeblayersService:
                 'bounds': resource.get('bbox'),
                 'crs': resource.get('crs')
             },
-            'editConfigUrl': '/map/editConfig.json?map=somap&layers=' + resource.get('identifier')
+            'editConfigUrl': '/map/editConfig.json?map=somap&layers=' + ",".join(layer_names)
         }
         if resource.get('external_layer'):
             metadata['externalLayer'] = resource.get('external_layer')
@@ -109,4 +113,4 @@ class WeblayersService:
         metadata = {
             k: v for k, v in metadata.items() if v is not None
         }
-        return (metadata, searchterms)
+        return (metadata, searchterms, layer_names)
