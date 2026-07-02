@@ -3,8 +3,7 @@ import os
 from flask import Flask, request, jsonify
 from flask_restx import Resource, fields, reqparse
 
-from qwc_services_core.api import Api
-from qwc_services_core.api import CaseInsensitiveArgument
+from qwc_services_core.api import Api, CaseInsensitiveArgument
 from qwc_services_core.app import app_nocache
 from qwc_services_core.auth import auth_manager, optional_auth, get_identity
 from qwc_services_core.tenant_handler import (
@@ -18,6 +17,7 @@ from weblayers_service import WeblayersService
 # Flask application
 app = Flask(__name__)
 app_nocache(app)
+app.config['RESTX_NO_DEFAULT_ROOT_RULE'] = True
 
 api = Api(app, version='1.0', title='Dataproduct service API',
           description="""API for SO!MAP dataproduct service.
